@@ -1,25 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
-
+import logo from "./logo.svg";
+import axios from "axios";
+import "./App.css";
+import { useEffect } from "react";
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    useEffect(() => {
+        const fetchIssues = async () => {
+            const data = await axios.get(
+                "https://api.github.com/repos/angular/angular-cli", {
+                    headers: {
+                        auth: 
+                    }
+                }
+            );
+            const description = await axios.get("https://api.github.com");
+            if (data && description) {
+                console.log(data);
+                console.log(description);
+            }
+        };
+        fetchIssues();
+    }, []);
+
+    return <div className="App"></div>;
 }
 
 export default App;
