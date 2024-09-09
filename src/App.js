@@ -6,8 +6,10 @@ import { router } from "./routes/router";
 import { RouterProvider } from "react-router-dom";
 function App() {
     return (
-    <RouterProvider router={router} />;
-    <h1>dev</h1>
+        <>
+            <RouterProvider router={router} />
+            <h1>dev</h1>
+        </>
     );
 }
 
