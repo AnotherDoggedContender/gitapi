@@ -2,8 +2,10 @@ import logo from "./logo.svg";
 import axios from "axios";
 import "./App.css";
 import { useEffect } from "react";
+import { router } from "./routes/router";
+import { RouterProvider } from "react-router-dom";
 function App() {
-    <h1></h1>;
+    return <RouterProvider router={router} />;
 }
 
 export default App;
