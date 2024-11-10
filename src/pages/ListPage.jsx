@@ -4,6 +4,7 @@ export const ListPage = () => {
     // const issueList = useSelector((state) => state.issueList.value);
     // const dispatch = useDispatch();
     // dispatch(print());
+    // issueList
     const githubAPIToken = process.env.REACT_APP_GITAPI_TOKEN;
     console.log(githubAPIToken);
     const fetchData = async () => {
