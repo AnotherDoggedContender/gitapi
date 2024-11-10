@@ -1,3 +1,37 @@
+import styled from "styled-components";
+
 export default function Header() {
-    return <div>header</div>;
+    return (
+        <>
+            <S.Container>
+                <S.Logo>Img</S.Logo>
+                <S.Title>Git Issue.net</S.Title>
+            </S.Container>
+
+            <hr />
+            <S.Container>
+                <S.RepoTitle>Repository</S.RepoTitle>
+                <S.CurrentRepo>placeholder/placeholder</S.CurrentRepo>
+            </S.Container>
+        </>
+    );
 }
+
+const Container = styled.div`
+    display: flex;
+    justify-content: center;
+`;
+const Logo = styled.div``;
+const Title = styled.div``;
+const RepoTitle = styled.div`
+    margin-right: 3em;
+`;
+const CurrentRepo = styled.div``;
+
+const S = {
+    Container,
+    Logo,
+    Title,
+    RepoTitle,
+    CurrentRepo,
+};
