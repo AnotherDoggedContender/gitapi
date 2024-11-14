@@ -1,22 +1,24 @@
 import { useDispatch, useSelector } from "react-redux";
-import { print, fetchData } from "../context/slicers/issueListSlices";
+import { print, fetchIssueList } from "../context/slicers/issueListSlices";
+import { useEffect, useState } from "react";
 export const ListPage = () => {
-    // const issueList = useSelector((state) => state.issueList.value);
-    // const dispatch = useDispatch();
-    // dispatch(print());
-    // issueList
-    const githubAPIToken = process.env.REACT_APP_GITAPI_TOKEN;
-    console.log(githubAPIToken);
+    const { issueListStatus, issueList } = useSelector((state) => {
+        console.log("ListPageState", state.issueList);
+        return state.issueList;
+    });
+    const dispatch = useDispatch();
     const fetchData = async () => {
-        const response = await fetch(`https://api.github.com/issues`, {
-            headers: {
-                Accept: "application/vnd.github + json",
-                Authorization: `Bearer ${githubAPIToken}`,
-            },
-        });
-        const result = await response.json();
-        console.log(result);
+        try {
+            dispatch(fetchIssueList());
+        } catch (error) {
+            console.log(error);
+        }
     };
-    fetchData();
-    return <div>목록 페이지</div>;
+    useEffect(() => {
+        fetchData();
+    }, []);
+    console.log(issueList[0]);
+    return issueList.map((issue) => {
+        return <div>{issue.url}</div>;
+    });
 };
