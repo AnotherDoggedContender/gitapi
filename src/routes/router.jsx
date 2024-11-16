@@ -1,9 +1,10 @@
 import { createBrowserRouter } from "react-router-dom";
+import { ListPage } from "../pages/ListPage";
 
 export const router = createBrowserRouter([
     {
         path: "/",
-        element: <div>목록 페이지</div>,
+        element: <ListPage></ListPage>,
     },
     {
         path: "/details",
