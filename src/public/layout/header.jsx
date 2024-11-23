@@ -20,6 +20,7 @@ export default function Header() {
 const Container = styled.div`
     display: flex;
     justify-content: center;
+    margin-bottom: 3em;
 `;
 const Logo = styled.div``;
 const Title = styled.div``;
