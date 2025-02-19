@@ -28,6 +28,7 @@ export const ListPage = () => {
         console.log("ListPageState", state);
         return state.issueList;
     });
+    let totalItem = null;
     const dispatch = useDispatch();
     const fetchData = async () => {
         try {
@@ -49,38 +50,46 @@ export const ListPage = () => {
                     },
                 }
             );
+
             const result = await response.json();
-            return result.total_count;
+            totalItem = result.total_count;
         } catch (error) {
             console.log(error);
         }
     };
-    let totalItem = null;
+
     useEffect(() => {
         fetchData();
         fetchTotalItem();
     }, []);
-    console.log(totalItem);
-    return issueList.map((issue) => {
-        return (
-            <>
-                <S.IssueContainer>
-                    <S.Number>#{issue.number}</S.Number>
-                    <S.Title>{issue.title}</S.Title>
-                    <S.Author>{issue.user.login}</S.Author>
-                    <S.CommentsNumber>
-                        Comments: {issue.comments}
-                    </S.CommentsNumber>
-                    <S.IssueDate>
-                        {issue.created_at && issue.created_at}
-                    </S.IssueDate>
-                </S.IssueContainer>
-                <S.IssueBody>
-                    <ReactMarkdown>{issue.body}</ReactMarkdown>
-                </S.IssueBody>
-            </>
-        );
-    });
+
+    return (
+        <>
+            <h1>{totalItem}</h1>
+            <div>
+                {issueList.map((issue) => {
+                    return (
+                        <>
+                            <S.IssueContainer>
+                                <S.Number>#{issue.number}</S.Number>
+                                <S.Title>{issue.title}</S.Title>
+                                <S.Author>{issue.user.login}</S.Author>
+                                <S.CommentsNumber>
+                                    Comments: {issue.comments}
+                                </S.CommentsNumber>
+                                <S.IssueDate>
+                                    {issue.created_at && issue.created_at}
+                                </S.IssueDate>
+                            </S.IssueContainer>
+                            <S.IssueBody>
+                                <ReactMarkdown>{issue.body}</ReactMarkdown>
+                            </S.IssueBody>
+                        </>
+                    );
+                })}
+            </div>
+        </>
+    );
 };
 const IssueContainer = styled.div`
     display: grid;
