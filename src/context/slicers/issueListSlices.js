@@ -13,13 +13,11 @@ export const fetchIssueList = createAsyncThunk("fetchIssueList", async () => {
     const result = await response.json();
     return result;
 });
+
 export const issueListSlice = createSlice({
     name: "issueList",
     initialState: { status: "", issueList: [] },
     reducers: {
-        setIssueList: (state, response) => {
-            state.value = response;
-        },
         print: (state) => {
             console.log(JSON.stringify(state));
         },

@@ -36,10 +36,29 @@ export const ListPage = () => {
             console.log(error);
         }
     };
+    const githubAPIToken = process.env.REACT_APP_GITAPI_TOKEN;
 
+    const fetchTotalItem = async () => {
+        try {
+            const response = await fetch(
+                `https://api.github.com/search/issues?q=repo:angular/angular-cli+is:issue+state:open`,
+                {
+                    headers: {
+                        Accept: "application/vnd.github + json",
+                        Authorization: `Bearer ${githubAPIToken}`,
+                    },
+                }
+            );
+            const result = await response.json();
+            return result.total_count;
+        } catch (error) {
+            console.log(error);
+        }
+    };
     let totalItem = null;
     useEffect(() => {
         fetchData();
+        fetchTotalItem();
     }, []);
     console.log(totalItem);
     return issueList.map((issue) => {
