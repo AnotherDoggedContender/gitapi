@@ -1,11 +1,31 @@
+// 페이지 목록 버튼 구현
+// 1. total item을 per_page로 나눈다->totalIndexButton
+//     total item
+//         지역 변수
+//         api 호출로 가져오기
+//     per_page
+//         지역 변수
+//         filter에서 가져오기
+// 2. totalIndexButton / 10: 바깥쪽 for문 반복 횟수
+//    10번: 안쪽 for문 반복 횟수
+//     숫자만 반복해서 렌더링
+//     각 숫자 태그에 id 값 집어넣기
+// 3. 포커싱
+//     버튼을 누르면 ref로 눌린 버튼의 id에 접근->눌린 버튼 파악->pressedNumber
+//     pressedNumber가 바뀌면 목록 버튼이 리렌더링 되어야 하므로 상태로 관리
+//     pressedNumber가 null이면
+//         그냥 렌더링 하기
+//     pressedNumber=n이면
+//         2번 안쪽 for문의 index가 n-1일 때 값을 [n]으로 하기
+
 import { useDispatch, useSelector } from "react-redux";
 import { print, fetchIssueList } from "../context/slicers/issueListSlices";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import ReactMarkdown from "react-markdown";
 export const ListPage = () => {
-    const { issueListStatus, issueList } = useSelector((state) => {
-        console.log("ListPageState", state.issueList);
+    const { issueList } = useSelector((state) => {
+        console.log("ListPageState", state);
         return state.issueList;
     });
     const dispatch = useDispatch();
@@ -16,13 +36,15 @@ export const ListPage = () => {
             console.log(error);
         }
     };
+
+    let totalItem = null;
     useEffect(() => {
         fetchData();
     }, []);
-
+    console.log(totalItem);
     return issueList.map((issue) => {
         return (
-            <Issues>
+            <>
                 <S.IssueContainer>
                     <S.Number>#{issue.number}</S.Number>
                     <S.Title>{issue.title}</S.Title>
@@ -37,11 +59,10 @@ export const ListPage = () => {
                 <S.IssueBody>
                     <ReactMarkdown>{issue.body}</ReactMarkdown>
                 </S.IssueBody>
-            </Issues>
+            </>
         );
     });
 };
-const Issues = styled.div``;
 const IssueContainer = styled.div`
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -81,7 +102,7 @@ const IssueDate = styled.div`
 const IssueBody = styled.div`
     border: 1px solid;
     width: 90%;
-    margin: auto;
+    margin: auto 3em;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
