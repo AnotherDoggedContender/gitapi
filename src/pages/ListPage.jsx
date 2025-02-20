@@ -42,7 +42,7 @@ export const ListPage = () => {
     const fetchTotalIssue = async () => {
         try {
             const response = await fetch(
-                `https://api.github.com/search/issues?q=repo:angular/angular-cli+is:issue+state:open`,
+                `https://api.github.com/search/issues?q=repo:angular/angular-cli+is:issue`,
                 {
                     headers: {
                         Accept: "application/vnd.github + json",

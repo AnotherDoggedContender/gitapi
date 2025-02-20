@@ -1,10 +1,12 @@
 import styled from "styled-components";
-
+import gitHubLogo from "../../assets/github-6980894_640.png";
 export default function Header() {
     return (
         <>
             <S.Container>
-                <S.Logo>Img</S.Logo>
+                <S.Logo>
+                    <img src={gitHubLogo} alt="gitHubLogo" />
+                </S.Logo>
                 <S.Title>Git Issue.net</S.Title>
             </S.Container>
 
@@ -19,7 +21,8 @@ export default function Header() {
 
 const Container = styled.div`
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     margin-bottom: 3em;
 `;
 const Logo = styled.div``;
