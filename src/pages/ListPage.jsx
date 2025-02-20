@@ -28,7 +28,7 @@ export const ListPage = () => {
         console.log("ListPageState", state);
         return state.issueList;
     });
-    let totalItem = null;
+    const [totalIssue, setTotalIssue] = useState();
     const dispatch = useDispatch();
     const fetchData = async () => {
         try {
@@ -39,7 +39,7 @@ export const ListPage = () => {
     };
     const githubAPIToken = process.env.REACT_APP_GITAPI_TOKEN;
 
-    const fetchTotalItem = async () => {
+    const fetchTotalIssue = async () => {
         try {
             const response = await fetch(
                 `https://api.github.com/search/issues?q=repo:angular/angular-cli+is:issue+state:open`,
@@ -52,7 +52,7 @@ export const ListPage = () => {
             );
 
             const result = await response.json();
-            totalItem = result.total_count;
+            return result.total_count;
         } catch (error) {
             console.log(error);
         }
@@ -60,12 +60,16 @@ export const ListPage = () => {
 
     useEffect(() => {
         fetchData();
-        fetchTotalItem();
+        const handleTotalIssuePromise = async () => {
+            const total = await fetchTotalIssue();
+            setTotalIssue(total);
+        };
+        handleTotalIssuePromise();
     }, []);
 
     return (
         <>
-            <h1>{totalItem}</h1>
+            <h1>{totalIssue}</h1>
             <div>
                 {issueList.map((issue) => {
                     return (
