@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import { ListPage } from "../pages/ListPage";
 import { Lab } from "../Lab/Lab";
+console.log(ListPage);
 export const router = createBrowserRouter([
     {
         path: "/",
