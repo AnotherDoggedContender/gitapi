@@ -7,7 +7,6 @@ import ReactMarkdown from "react-markdown";
 
 export const ListPage = () => {
     const { issueList } = useSelector((state) => {
-        console.log("ListPageState", state);
         return state.issueList;
     });
     const [totalIssue, setTotalIssue] = useState();
@@ -54,8 +53,8 @@ export const ListPage = () => {
         <>
             {issueList.map((issue) => {
                 return (
-                    <>
-                        <S.IssueContainer>
+                    <S.IssueContainer key={issue.number}>
+                        <S.IssueInfos>
                             <S.Number>#{issue.number}</S.Number>
                             <S.Title>{issue.title}</S.Title>
                             <S.Author>{issue.user.login}</S.Author>
@@ -65,18 +64,19 @@ export const ListPage = () => {
                             <S.IssueDate>
                                 {issue.created_at && issue.created_at}
                             </S.IssueDate>
-                        </S.IssueContainer>
+                        </S.IssueInfos>
                         <S.IssueBody>
                             <ReactMarkdown>{issue.body}</ReactMarkdown>
                         </S.IssueBody>
-                    </>
+                    </S.IssueContainer>
                 );
             })}
             <PageIndex $totalIssue={totalIssue} />
         </>
     );
 };
-const IssueContainer = styled.div`
+const IssueContainer = styled.div``;
+const IssueInfos = styled.div`
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
@@ -125,6 +125,7 @@ const IssueBody = styled.div`
 
 const S = {
     IssueContainer,
+    IssueInfos,
     Number,
     Title,
     Author,
