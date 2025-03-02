@@ -39,21 +39,28 @@
 
 import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { fetchTotalIssue } from "../context/slices/totalIssueSlice";
 import { setCurrentPage } from "../context/slices/currentPageSlices";
 import styled from "styled-components";
 
-export const PageIndex = ({ $totalIssue }) => {
+export const PageIndex = () => {
+    const totalIssue = useSelector((state) => {
+        return state.totalIssue.totalIssueCount;
+    });
+
+    const fetchTotalIssueNumber = async () => {
+        dispatch(fetchTotalIssue());
+    };
     const [perPage, setPerPage] = useState(50); //나중에 ListPage에서 props로 가져와야 함
     const currentRowMemory = useRef();
     const currentPage = useSelector((state) => {
         return state.currentPage.value;
     });
     const dispatch = useDispatch();
-    const maxRow = Math.floor($totalIssue / perPage / 10) + 1;
-    const maxPage = Math.ceil($totalIssue / perPage);
-    const [indexNumArray, setIndexNumArray] = useState([
-        1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-    ]);
+    // const maxRow = Math.floor(totalIssue / perPage / 10) + 1;
+    console.log("totalIssue", totalIssue);
+    const maxPage = Math.ceil(totalIssue / perPage);
+    const [indexNumArray, setIndexNumArray] = useState([]);
 
     const calculateCurrentRow = (currentPage) => {
         return Math.ceil(currentPage / 10);
@@ -62,13 +69,16 @@ export const PageIndex = ({ $totalIssue }) => {
         const currentRow = calculateCurrentRow(currentPage);
 
         if (currentRowMemory.current === currentRow) return;
+        console.log("calculateIndexNumber 실행됨");
         let indexNumArray = [];
         for (let currentNum = 1; currentNum < 11; currentNum++) {
             let indexNum = (currentRow - 1) * 10 + currentNum;
+            console.log("maxPage:", maxPage);
             if (indexNum > maxPage) break;
+
             indexNumArray.push(indexNum);
         }
-
+        console.log(indexNumArray);
         setIndexNumArray(indexNumArray);
     };
     const onClickCurrentRowBtn = (e) => {
@@ -95,8 +105,10 @@ export const PageIndex = ({ $totalIssue }) => {
     };
     useEffect(() => {
         calculateIndexNumber();
-    }, [currentPage]);
-
+    }, [currentPage, totalIssue]);
+    useEffect(() => {
+        fetchTotalIssueNumber();
+    }, []);
     return (
         <S.PageIndexContainer>
             <S.VeryFrontBtn onClick={onClickCurrentRowBtn} id="veryFrontBtn">
@@ -107,6 +119,7 @@ export const PageIndex = ({ $totalIssue }) => {
             </S.FrontBtn>
             <S.IndexBtnContainer>
                 {indexNumArray.map((number) => {
+                    console.log("rendered number", number);
                     return (
                         <S.IndexNumItem
                             key={number}

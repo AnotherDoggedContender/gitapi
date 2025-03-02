@@ -1,7 +1,7 @@
 import { PageIndex } from "../components/PageIndex";
 import { useDispatch, useSelector } from "react-redux";
 import { print, fetchIssueList } from "../context/slices/issueListSlices";
-import { fetchTotalIssue } from "../context/slices/totalIssueSlice";
+
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import ReactMarkdown from "react-markdown";
@@ -11,16 +11,12 @@ export const ListPage = () => {
     const { issueList } = useSelector((state) => {
         return state.issueList;
     });
-    const totalIssue = useSelector((state) => {
-        return state.totalIssue.totalIssueCount;
-    });
+
     const currentPage = useSelector((state) => {
         return state.currentPage.value;
     });
     const dispatch = useDispatch();
-    const fetchTotalIssueNumber = async () => {
-        dispatch(fetchTotalIssue());
-    };
+
     const fetchData = async () => {
         dispatch(fetchIssueList(currentPage));
     };
@@ -29,9 +25,6 @@ export const ListPage = () => {
         console.log("useEffect에서 currentPage:", currentPage);
         fetchData(); //이슈 리스트
     }, [currentPage]);
-    useEffect(() => {
-        fetchTotalIssueNumber();
-    }, []);
 
     return (
         <>
@@ -55,7 +48,7 @@ export const ListPage = () => {
                     </S.IssueContainer>
                 );
             })}
-            <PageIndex $totalIssue={totalIssue} />
+            <PageIndex />
         </>
     );
 };
