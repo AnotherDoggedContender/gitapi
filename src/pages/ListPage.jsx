@@ -19,24 +19,15 @@ export const ListPage = () => {
     });
     const dispatch = useDispatch();
     const fetchTotalIssueNumber = async () => {
-        try {
-            console.log("dispatch(fetchTotalIssue) 실행");
-
-            dispatch(fetchTotalIssue());
-        } catch (error) {
-            console.log(error);
-        }
+        dispatch(fetchTotalIssue());
     };
     const fetchData = async () => {
-        try {
-            dispatch(fetchIssueList());
-        } catch (error) {
-            console.log(error);
-        }
+        dispatch(fetchIssueList(currentPage));
     };
 
     useEffect(() => {
-        fetchData(currentPage); //이슈 리스트
+        console.log("useEffect에서 currentPage:", currentPage);
+        fetchData(); //이슈 리스트
     }, [currentPage]);
     useEffect(() => {
         fetchTotalIssueNumber();

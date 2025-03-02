@@ -109,6 +109,7 @@ export const PageIndex = ({ $totalIssue }) => {
                 {indexNumArray.map((number) => {
                     return (
                         <S.IndexNumItem
+                            key={number}
                             onClick={(e) => {
                                 if (number !== currentPage)
                                     dispatch(setCurrentPage(number));

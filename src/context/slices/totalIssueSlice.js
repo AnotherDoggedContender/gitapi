@@ -12,7 +12,6 @@ export const fetchTotalIssue = createAsyncThunk("fetchTotalIssue", async () => {
                 },
             }
         );
-        console.log("fetchTotalIssue 실행");
         const result = await response.json();
         return result.total_count;
     } catch (error) {
@@ -29,7 +28,6 @@ export const totalIssueSlice = createSlice({
         });
         builder.addCase(fetchTotalIssue.fulfilled, (state, action) => {
             state.status = "fulfilled";
-            console.log("totalIssueCount에 값 저장");
             state.totalIssueCount = action.payload;
         });
         builder.addCase(fetchTotalIssue.rejected, (state, action) => {
