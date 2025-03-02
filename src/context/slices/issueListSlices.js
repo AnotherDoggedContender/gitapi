@@ -1,18 +1,22 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 const githubAPIToken = process.env.REACT_APP_GITAPI_TOKEN;
 
-export const fetchIssueList = createAsyncThunk("fetchIssueList", async () => {
-    const response = await fetch(
-        `https://api.github.com/repos/angular/angular-cli/issues?per_page=200`,
-        {
-            headers: {
-                Authorization: `Bearer ${githubAPIToken}`,
-            },
-        }
-    );
-    const result = await response.json();
-    return result;
-});
+export const fetchIssueList = createAsyncThunk(
+    "fetchIssueList",
+    async (currentPage) => {
+        console.log("currentPage in issueListSlice:", currentPage);
+        const response = await fetch(
+            `https://api.github.com/repos/angular/angular-cli/issues?per_page=50&page=${currentPage}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${githubAPIToken}`,
+                },
+            }
+        );
+        const result = await response.json();
+        return result;
+    }
+);
 
 export const issueListSlice = createSlice({
     name: "issueList",

@@ -39,7 +39,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setCurrentPage } from "../context/slicers/currentPageSlices";
+import { setCurrentPage } from "../context/slices/currentPageSlices";
 import styled from "styled-components";
 
 export const PageIndex = ({ $totalIssue }) => {
@@ -91,13 +91,9 @@ export const PageIndex = ({ $totalIssue }) => {
                 dispatch(setCurrentPage(maxPage));
                 break;
             default:
-                console.log("index 버튼 클릭 처리에서 오류 발생");
         }
     };
     useEffect(() => {
-        console.log("currentPage:", currentPage);
-        console.log("currentRow:", calculateCurrentRow(currentPage));
-
         calculateIndexNumber();
     }, [currentPage]);
 

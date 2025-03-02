@@ -1,16 +1,32 @@
 import { PageIndex } from "../components/PageIndex";
 import { useDispatch, useSelector } from "react-redux";
-import { print, fetchIssueList } from "../context/slicers/issueListSlices";
+import { print, fetchIssueList } from "../context/slices/issueListSlices";
+import { fetchTotalIssue } from "../context/slices/totalIssueSlice";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import ReactMarkdown from "react-markdown";
+import { current } from "@reduxjs/toolkit";
 
 export const ListPage = () => {
     const { issueList } = useSelector((state) => {
         return state.issueList;
     });
-    const [totalIssue, setTotalIssue] = useState();
+    const totalIssue = useSelector((state) => {
+        return state.totalIssue.totalIssueCount;
+    });
+    const currentPage = useSelector((state) => {
+        return state.currentPage.value;
+    });
     const dispatch = useDispatch();
+    const fetchTotalIssueNumber = async () => {
+        try {
+            console.log("dispatch(fetchTotalIssue) 실행");
+
+            dispatch(fetchTotalIssue());
+        } catch (error) {
+            console.log(error);
+        }
+    };
     const fetchData = async () => {
         try {
             dispatch(fetchIssueList());
@@ -18,35 +34,12 @@ export const ListPage = () => {
             console.log(error);
         }
     };
-    const githubAPIToken = process.env.REACT_APP_GITAPI_TOKEN;
-
-    const fetchTotalIssue = async () => {
-        try {
-            const response = await fetch(
-                `https://api.github.com/search/issues?q=repo:angular/angular-cli+is:issue`,
-                {
-                    headers: {
-                        Accept: "application/vnd.github + json",
-                        Authorization: `Bearer ${githubAPIToken}`,
-                    },
-                }
-            );
-
-            const result = await response.json();
-            return result.total_count;
-        } catch (error) {
-            console.log(error);
-        }
-    };
 
     useEffect(() => {
-        fetchData();
-        const handleTotalIssuePromise = async () => {
-            const total = await fetchTotalIssue();
-
-            setTotalIssue(total);
-        };
-        handleTotalIssuePromise();
+        fetchData(currentPage); //이슈 리스트
+    }, [currentPage]);
+    useEffect(() => {
+        fetchTotalIssueNumber();
     }, []);
 
     return (
