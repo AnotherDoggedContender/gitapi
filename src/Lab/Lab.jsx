@@ -1,15 +1,23 @@
-import { useEffect } from "react";
+import { useEffect, useState, useRef } from "react";
 
 export const Lab = () => {
-    const { height, width, title } = {
-        title: "menu",
-        height: 169.9,
-        width: 10,
+    const currentRow = useRef(1);
+    const calculate = () => {
+        console.log("계산함수 작동");
     };
-    console.log(title, height, width);
+    useEffect(() => {
+        calculate();
+    }, [currentRow.current]);
     return (
         <>
-            <h1>연구소</h1>
+            <h1
+                onClick={() => {
+                    currentRow.current = currentRow.current + 1;
+                    console.log(currentRow);
+                }}
+            >
+                연구소
+            </h1>
         </>
     );
 };

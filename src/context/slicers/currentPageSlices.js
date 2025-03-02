@@ -7,7 +7,7 @@ export const currentPageSlice = createSlice({
     },
     reducers: {
         setCurrentPage: (state, parameter) => {
-            state.value = parameter;
+            state.value = parameter.payload;
         },
     },
 });
