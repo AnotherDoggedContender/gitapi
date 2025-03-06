@@ -1,4 +1,5 @@
 // 페이지 목록 버튼 구현
+// currentPage 값은 주소줄에서 나와야 한다. currentPage 변경 시 주소줄에 변경되는 currentPage가 작성되어야 한다.
 // 1. totalIssue을 per_page로 나눈다->totalIndexButton
 //     totalIssue
 //         지역 변수
@@ -12,6 +13,8 @@
 // 현재 페이지(currentPage): 초기값 1, 최대값은 Math.ceil(totalIssue/perPage)=maxPage, 전역 상태, 얘가 바뀌면 focus되는 숫자도 바뀌어야 함
 // indexNumber: currentRow * 10 + i
 // currentPage 변경-> currentRow 다시 계산->계산 결과 currentRow 값이 바뀌면 calculateIndexArray 함수 작동
+// ``              -> history.pushState로 주소창의 currentPage 변경(setCurrentPage에서 하면 됨)
+// popState 이벤트가 발생하면 currentPage를 url에 저장된 값으로 변경하고, 이슈 리스트를 다시 받아와야 한다.
 // 1) 숫자 버튼을 누르면
 //     currentPage와 눌린 숫자 버튼이 같으면 return
 //     아니면 currentPage가 눌린 숫자 버튼으로 바뀐다->가져오는 issue 페이지 변경, []된 숫자 변경
@@ -28,37 +31,33 @@
 //     currentPage가 maxPage이면 return한다.
 //     아니면 currentPage를 maxPage로 바꾼다.
 
-// 3. caculateIndexNumber
+// 3. calculateIndexNumber
 //    역할: 목록 버튼에 들어가는 숫자를 계산한다.
 
 //    숫자 for문: 10번 반복, i가 반복문 현재 값, 초기 값 1
 
 //    계산한 숫자를 indexNumberArray 배열(지역 상태)에 저장한다.
 //    사이트 첫 실행 혹은 currentRow가 변경될 때 마다 실행된다.
-//    동작 과정: 버튼 클릭->currentRow 변경 여부 확인->변경되면 caculateIndexNumber 실행->indexNumberArray 변경 -> 리렌더링
+//    동작 과정: 버튼 클릭->currentRow 변경 여부 확인->변경되면 calculateIndexNumber 실행->indexNumberArray 변경 -> 리렌더링
 
 import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTotalIssue } from "../context/slices/totalIssueSlice";
 import { setCurrentPage } from "../context/slices/currentPageSlices";
 import styled from "styled-components";
-
+// 현재 issueList는 31페이지에서 issue 3개만 띄우고 끝난다. ->totalIssue 정답: 303
 export const PageIndex = () => {
-    const totalIssue = useSelector((state) => {
-        return state.totalIssue.totalIssueCount;
-    });
-
+    const history = window.history;
+    const totalIssue = 198;
     const fetchTotalIssueNumber = async () => {
         dispatch(fetchTotalIssue());
     };
-    const [perPage, setPerPage] = useState(50); //나중에 ListPage에서 props로 가져와야 함
+    const [perPage, setPerPage] = useState(10); //나중에 ListPage에서 props로 가져와야 함
     const currentRowMemory = useRef();
     const currentPage = useSelector((state) => {
         return state.currentPage.value;
     });
     const dispatch = useDispatch();
-    // const maxRow = Math.floor(totalIssue / perPage / 10) + 1;
-    console.log("totalIssue", totalIssue);
     const maxPage = Math.ceil(totalIssue / perPage);
     const [indexNumArray, setIndexNumArray] = useState([]);
 
@@ -69,16 +68,13 @@ export const PageIndex = () => {
         const currentRow = calculateCurrentRow(currentPage);
 
         if (currentRowMemory.current === currentRow) return;
-        console.log("calculateIndexNumber 실행됨");
         let indexNumArray = [];
         for (let currentNum = 1; currentNum < 11; currentNum++) {
             let indexNum = (currentRow - 1) * 10 + currentNum;
-            console.log("maxPage:", maxPage);
             if (indexNum > maxPage) break;
 
             indexNumArray.push(indexNum);
         }
-        console.log(indexNumArray);
         setIndexNumArray(indexNumArray);
     };
     const onClickCurrentRowBtn = (e) => {
@@ -105,6 +101,7 @@ export const PageIndex = () => {
     };
     useEffect(() => {
         calculateIndexNumber();
+        history.pushState({}, "");
     }, [currentPage, totalIssue]);
     useEffect(() => {
         fetchTotalIssueNumber();
@@ -119,7 +116,6 @@ export const PageIndex = () => {
             </S.FrontBtn>
             <S.IndexBtnContainer>
                 {indexNumArray.map((number) => {
-                    console.log("rendered number", number);
                     return (
                         <S.IndexNumItem
                             key={number}

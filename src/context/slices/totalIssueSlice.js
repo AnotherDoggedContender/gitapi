@@ -4,7 +4,7 @@ const githubAPIToken = process.env.REACT_APP_GITAPI_TOKEN;
 export const fetchTotalIssue = createAsyncThunk("fetchTotalIssue", async () => {
     try {
         const response = await fetch(
-            `https://api.github.com/search/issues?q=repo:angular/angular-cli+is:issue`,
+            `https://api.github.com/search/issues?q=repo:angular/angular-cli+is:issue+is:open`,
             {
                 headers: {
                     Accept: "application/vnd.github + json",

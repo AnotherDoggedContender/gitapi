@@ -1,13 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 const githubAPIToken = process.env.REACT_APP_GITAPI_TOKEN;
-
+const fetchURL = `https://api.github.com/repos/angular/angular-cli/issues`;
 export const fetchIssueList = createAsyncThunk(
     "fetchIssueList",
     async (currentPage) => {
         try {
-            console.log("currentPage in issueListSlice:", currentPage);
             const response = await fetch(
-                `https://api.github.com/repos/angular/angular-cli/issues?per_page=50&page=${currentPage}`,
+                `${fetchURL}?per_page=10&page=${currentPage}&state:open`,
                 {
                     headers: {
                         Authorization: `Bearer ${githubAPIToken}`,
@@ -28,6 +27,9 @@ export const issueListSlice = createSlice({
     reducers: {
         print: (state) => {
             console.log(JSON.stringify(state));
+        },
+        returnFetchURL: () => {
+            return fetchURL;
         },
     },
     extraReducers: (builder) => {

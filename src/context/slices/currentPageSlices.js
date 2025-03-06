@@ -7,7 +7,11 @@ export const currentPageSlice = createSlice({
     },
     reducers: {
         setCurrentPage: (state, parameter) => {
+            const history = window.history;
             state.value = parameter.payload; //parameter.payload에 저장할 값이 들어있음
+            history.pushState({}, "", `?currentPage=${parameter.payload}`);
+            console.log("currentPage:", parameter.payload);
+            console.log("url:", history);
         },
     },
 });
