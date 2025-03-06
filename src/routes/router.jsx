@@ -1,18 +1,18 @@
 import { createBrowserRouter } from "react-router-dom";
 import { ListPage } from "../pages/ListPage";
 import { Lab } from "../Lab/Lab";
-console.log(ListPage);
+import { LandingPage } from "../pages/LandingPage";
 export const router = createBrowserRouter([
     {
         path: "/",
-        element: <ListPage></ListPage>,
+        element: <LandingPage></LandingPage>,
     },
     {
         path: "/details",
         element: <div>상세 페이지</div>,
     },
     {
-        path: "/lab",
-        element: <Lab></Lab>,
+        path: "/listPage?/*",
+        element: <ListPage></ListPage>,
     },
 ]);

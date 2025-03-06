@@ -42,8 +42,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchTotalIssue } from "../context/slices/totalIssueSlice";
 import { setCurrentPage } from "../context/slices/currentPageSlices";
 import styled from "styled-components";
+import { useSearchParams } from "react-router-dom";
+import { current } from "@reduxjs/toolkit";
 
-export const PageIndex = () => {
+export const PageIndex = ({ currentPage }) => {
     const totalIssue = useSelector((state) => {
         return state.totalIssue.totalIssueCount;
     });
@@ -53,9 +55,8 @@ export const PageIndex = () => {
     };
     const [perPage, setPerPage] = useState(50); //나중에 ListPage에서 props로 가져와야 함
     const currentRowMemory = useRef();
-    const currentPage = useSelector((state) => {
-        return state.currentPage.value;
-    });
+    const [searchParams, setSearchParams] = useSearchParams();
+
     const dispatch = useDispatch();
     // const maxRow = Math.floor(totalIssue / perPage / 10) + 1;
     const maxPage = Math.ceil(totalIssue / perPage);
@@ -84,24 +85,25 @@ export const PageIndex = () => {
         switch (e.target.id) {
             case "veryFrontBtn":
                 if (currentPage === 1) break;
-                dispatch(setCurrentPage(1));
+                setSearchParams({ currentPage: 1 });
                 break;
             case "frontBtn":
                 if (currentPage === 1) break;
-                dispatch(setCurrentPage(currentPage - 1));
+                setSearchParams({ currentPage: currentPage - 1 });
                 break;
             case "backBtn":
                 if (currentPage === maxPage) break;
-                dispatch(setCurrentPage(currentPage + 1));
+                setSearchParams({ currentPage: currentPage + 1 });
                 break;
             case "veryBackBtn":
                 if (currentPage === maxPage) break;
-                dispatch(setCurrentPage(maxPage));
+                setSearchParams({ currentPage: maxPage });
                 break;
             default:
         }
     };
     useEffect(() => {
+        console.log(currentPage);
         calculateIndexNumber();
     }, [currentPage, totalIssue]);
     useEffect(() => {
@@ -122,7 +124,7 @@ export const PageIndex = () => {
                             key={number}
                             onClick={(e) => {
                                 if (number !== currentPage)
-                                    dispatch(setCurrentPage(number));
+                                    setSearchParams({ currentPage: number });
                             }}
                         >
                             {number === currentPage ? `[${number}]` : number}

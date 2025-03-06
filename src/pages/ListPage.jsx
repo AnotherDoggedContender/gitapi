@@ -6,15 +6,15 @@ import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import ReactMarkdown from "react-markdown";
 import { current } from "@reduxjs/toolkit";
+import { useSearchParams } from "react-router-dom";
 
 export const ListPage = () => {
     const { issueList } = useSelector((state) => {
         return state.issueList;
     });
-
-    const currentPage = useSelector((state) => {
-        return state.currentPage.value;
-    });
+    const [searchParams, setSearchParams] = useSearchParams();
+    const currentPage = parseInt(searchParams.get("currentPage"));
+    console.log(currentPage);
     const dispatch = useDispatch();
 
     const fetchData = async () => {
@@ -47,7 +47,7 @@ export const ListPage = () => {
                     </S.IssueContainer>
                 );
             })}
-            <PageIndex />
+            <PageIndex currentPage={currentPage} />
         </>
     );
 };
