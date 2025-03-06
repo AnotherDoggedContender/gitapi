@@ -58,7 +58,6 @@ export const PageIndex = () => {
     });
     const dispatch = useDispatch();
     // const maxRow = Math.floor(totalIssue / perPage / 10) + 1;
-    console.log("totalIssue", totalIssue);
     const maxPage = Math.ceil(totalIssue / perPage);
     const [indexNumArray, setIndexNumArray] = useState([]);
 
@@ -69,16 +68,15 @@ export const PageIndex = () => {
         const currentRow = calculateCurrentRow(currentPage);
 
         if (currentRowMemory.current === currentRow) return;
-        console.log("calculateIndexNumber 실행됨");
+
         let indexNumArray = [];
         for (let currentNum = 1; currentNum < 11; currentNum++) {
             let indexNum = (currentRow - 1) * 10 + currentNum;
-            console.log("maxPage:", maxPage);
+
             if (indexNum > maxPage) break;
 
             indexNumArray.push(indexNum);
         }
-        console.log(indexNumArray);
         setIndexNumArray(indexNumArray);
     };
     const onClickCurrentRowBtn = (e) => {
@@ -119,7 +117,6 @@ export const PageIndex = () => {
             </S.FrontBtn>
             <S.IndexBtnContainer>
                 {indexNumArray.map((number) => {
-                    console.log("rendered number", number);
                     return (
                         <S.IndexNumItem
                             key={number}

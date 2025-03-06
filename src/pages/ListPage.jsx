@@ -22,7 +22,6 @@ export const ListPage = () => {
     };
 
     useEffect(() => {
-        console.log("useEffect에서 currentPage:", currentPage);
         fetchData(); //이슈 리스트
     }, [currentPage]);
 
