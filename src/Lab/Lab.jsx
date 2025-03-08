@@ -1,19 +1,15 @@
 import { useEffect, useState, useRef } from "react";
+import { useLocation, useSearchParams } from "react-router-dom";
 
 export const Lab = () => {
-    const currentRow = useRef(1);
-    const calculate = () => {
-        console.log("계산함수 작동");
-    };
-    useEffect(() => {
-        calculate();
-    }, [currentRow.current]);
+    const [searchParams, setSearchParams] = useSearchParams();
+
     return (
         <>
             <h1
                 onClick={() => {
-                    currentRow.current = currentRow.current + 1;
-                    console.log(currentRow);
+                    setSearchParams({ a: 100 });
+                    console.log("QueryString", searchParams.getAll("a"));
                 }}
             >
                 연구소

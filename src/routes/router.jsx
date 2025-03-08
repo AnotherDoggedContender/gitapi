@@ -12,7 +12,11 @@ export const router = createBrowserRouter([
         element: <div>상세 페이지</div>,
     },
     {
-        path: "/listPage?/*",
+        path: "/listPage",
         element: <ListPage></ListPage>,
+    },
+    {
+        path: "/lab",
+        element: <Lab></Lab>,
     },
 ]);

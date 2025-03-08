@@ -1,5 +1,12 @@
+// owner, repos 변수
+// 1. ListPage 혹은 LandingPage에서 검색창으로 owner와 repos에 들어갈 문자열을 받는다.
+// 2. 1의 내용을 fetchIssueList함수에 전달한다.
+// 3. fetch에서 주소창에 받은 변수를 집어넣는다.
+// 4. 두 변수는 ListPage에 출력되어야 한다.
+// 5. 두 변수가 변하면 페이지 출력도 변하므로 전역 상태로 관리해야 한다.
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 const githubAPIToken = process.env.REACT_APP_GITAPI_TOKEN;
+export const owner = "";
 
 export const fetchIssueList = createAsyncThunk(
     "fetchIssueList",

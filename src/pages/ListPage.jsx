@@ -27,6 +27,29 @@ export const ListPage = () => {
 
     return (
         <>
+            <S.SetUpContainer>
+                <S.InputRepoContainer>
+                    <S.OwnerInput placeholder="Owner"></S.OwnerInput>
+                    <S.RepoInput placeholder="Repo"></S.RepoInput>
+                </S.InputRepoContainer>
+                <S.FilterContainer>
+                    <S.SortFilter>
+                        <S.Option>생성순</S.Option>
+                        <S.Option>업데이트순</S.Option>
+                        <S.Option>댓글순</S.Option>
+                    </S.SortFilter>
+                    <S.DirectionFilter>
+                        <S.Option>내림차순</S.Option>
+                        <S.Option>오름차순</S.Option>
+                    </S.DirectionFilter>
+                    <S.PerPageFilter>
+                        <S.Option>10개 씩</S.Option>
+                        <S.Option>20개 씩</S.Option>
+                        <S.Option>50개 씩</S.Option>
+                    </S.PerPageFilter>
+                </S.FilterContainer>
+            </S.SetUpContainer>
+
             {issueList.map((issue) => {
                 return (
                     <S.IssueContainer key={issue.number}>
@@ -51,6 +74,18 @@ export const ListPage = () => {
         </>
     );
 };
+const SetUpContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+`;
+const InputRepoContainer = styled.div``;
+const OwnerInput = styled.input``;
+const RepoInput = styled.input``;
+const FilterContainer = styled.div``;
+const SortFilter = styled.select``;
+const DirectionFilter = styled.select``;
+const PerPageFilter = styled.select``;
+const Option = styled.option``;
 const IssueContainer = styled.div``;
 const IssueInfos = styled.div`
     display: grid;
@@ -100,6 +135,15 @@ const IssueBody = styled.div`
 `;
 
 const S = {
+    SetUpContainer,
+    InputRepoContainer,
+    OwnerInput,
+    RepoInput,
+    FilterContainer,
+    SortFilter,
+    DirectionFilter,
+    PerPageFilter,
+    Option,
     IssueContainer,
     IssueInfos,
     Number,
